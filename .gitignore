@@ -1,0 +1,32 @@
+# Maven
+target/
+.m2-repository/
+!.mvn/wrapper/maven-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Java build output
+*.class
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Local environment and secrets
+.env
+*.local
+application-local.yml
+application-local.yaml
+.env.*
+!.env.example
+target*/
+.maven-build/

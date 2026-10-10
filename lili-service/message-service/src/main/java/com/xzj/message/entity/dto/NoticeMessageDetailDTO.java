@@ -1,0 +1,22 @@
+package com.xzj.message.entity.dto;
+
+import com.xzj.message.entity.dos.NoticeMessage;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.util.List;
+
+/**
+ * 站内信消息DTO
+ *
+ * @author Chopper
+ * @since 2020/12/8 9:46
+ */
+@Data
+@EqualsAndHashCode(callSuper = false)
+public class NoticeMessageDetailDTO extends NoticeMessage {
+
+    @Schema(description = "消息变量")
+    private List<String> variables;
+}

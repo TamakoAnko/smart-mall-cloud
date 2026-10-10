@@ -1,0 +1,19 @@
+package com.xzj.member.sms.entity.dto;
+
+import com.xzj.member.sms.entity.dos.SmsReach;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.util.List;
+
+/**
+ * 短信任务DTO
+ * @author Chopper
+ * @since 2020/12/8 9:46
+ */
+@Data
+@EqualsAndHashCode(callSuper = false)
+public class SmsReachDTO extends SmsReach {
+
+    private List<String> mobile;
+}

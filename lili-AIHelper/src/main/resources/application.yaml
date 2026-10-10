@@ -1,0 +1,105 @@
+server:
+  port: 9001
+
+spring:
+  application:
+    # 与 artifactId 保持一致；网关按服务名路由时用的就是这个
+    name: lili-AIHelper
+
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      timeout: 3s
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+
+    openfeign:
+      client:
+        config:
+          default:
+            connect-timeout: 2000    # 连不上别把用户卡死
+            read-timeout: 8000
+
+  ai:
+    deepseek:
+      # 放环境变量或 IDEA 的 Run Configuration，不要提交真实 key
+      api-key: ${DEEPSEEK_API_KEY}
+      base-url: https://api.deepseek.com
+      chat:
+        options:
+          model: deepseek-chat
+          temperature: 0.7
+
+    # ===== MCP 客户端 =====
+    # Windows 必须用 "cmd /c npx ..."，因为 npx 是 .cmd 脚本，直接写 npx 会启动失败
+    mcp:
+      client:
+        enabled: true
+        name: lili-ai-helper
+        version: 1.0.0
+        type: SYNC
+        # true：启动就连 MCP 服务器（工具立刻可用，日志里能看到清单）；
+        # 如果某台 MCP 服务器起不来导致应用启动失败，把它改成 false 或注释掉对应连接
+        initialized: true
+        request-timeout: 30s
+        toolcallback:
+          enabled: true
+        stdio:
+          connections:
+            # 知识库文件服务器：AI 可以读/写这个目录里的文档（只圈这个目录，别指向磁盘根）
+            knowledge:
+              command: cmd
+              args:
+                - /c
+                - npx
+                - "-y"
+                - "@modelcontextprotocol/server-filesystem"
+                - "${lili.ai.rag.knowledge-dir}"
+            # 记忆服务器：把用户偏好存成知识图谱文件
+            memory:
+              command: cmd
+              args:
+                - /c
+                - npx
+                - "-y"
+                - "@modelcontextprotocol/server-memory"
+            # 思维链服务器：购物清单规划这类分步任务
+            thinking:
+              command: cmd
+              args:
+                - /c
+                - npx
+                - "-y"
+                - "@modelcontextprotocol/server-sequential-thinking"
+
+# ===== 业务配置 =====
+lili:
+  ai:
+    memory:
+      # 消息条数达到 20（约 10 轮问答）时触发摘要压缩
+      trigger-messages: 20
+      # 压缩后保留最近 6 条原文，其余交给大模型总结成 1 条系统消息
+      keep-messages: 6
+      # 每条会话记忆在 Redis 里的存活时间
+      ttl: 7d
+    rag:
+      # RAG 默认关闭。打开前必须先准备 EmbeddingModel（见 patch 目录里的 README）
+      enabled: false
+      # 知识库目录：既给 MCP filesystem 服务器读，也给 RAG 灌数据用
+      knowledge-dir: ${AI_KNOWLEDGE_DIR:./ai-knowledge}
+
+logging:
+  level:
+    # 注意：logger 名里不能有空格
+    org.springframework.ai.chat.client.advisor: debug
+    com.xzj: debug

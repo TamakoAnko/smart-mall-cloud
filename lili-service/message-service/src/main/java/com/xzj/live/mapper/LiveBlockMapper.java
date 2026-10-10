@@ -1,0 +1,11 @@
+package com.xzj.live.mapper;
+
+import com.xzj.live.entity.dos.LiveBlock;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+/**
+ * @author chc
+ * @since 2022/6/2114:46
+ */
+public interface LiveBlockMapper extends BaseMapper<LiveBlock> {
+}

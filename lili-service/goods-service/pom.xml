@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>goods-service</artifactId>
+
+    <parent>
+        <groupId>cn.lili</groupId>
+        <artifactId>lili-service</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.xzj.GoodsServiceApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency><groupId>cn.lili</groupId><artifactId>message-api</artifactId></dependency>
+        <dependency><groupId>cn.lili</groupId><artifactId>member-api</artifactId></dependency>
+        <dependency><groupId>cn.lili</groupId><artifactId>order-api</artifactId></dependency>
+        <dependency>
+            <groupId>cn.lili</groupId>
+            <artifactId>goods-api</artifactId>
+        </dependency>
+    </dependencies>
+</project>

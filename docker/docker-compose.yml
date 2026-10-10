@@ -1,0 +1,44 @@
+services:
+  nacos:
+    image: nacos/nacos-server:v3.0.3
+    container_name: lili-nacos
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+    environment:
+      MODE: standalone
+      NACOS_AUTH_ENABLE: "false"
+    restart: always
+
+
+#    说明 :8848 是 Nacos 控制台和 HTTP 端口,9848 是客户端 gRPC 通信端口(新版 Nacos 必须放开,少了它服务注册会超时);
+#     MODE: standalone 表示单机模式。
+
+  mysql:
+    image: mysql:8.0
+    container_name: lili-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD is required}
+      MYSQL_DATABASE: lilishop
+      TZ: Asia/Shanghai
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d:ro
+    restart: always
+
+  redis:
+    image: redis:7-alpine
+    container_name: lili-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:?REDIS_PASSWORD is required}
+    restart: always
+
+volumes:
+  mysql_data:
+  redis_data:

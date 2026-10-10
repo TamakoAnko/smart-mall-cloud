@@ -1,0 +1,17 @@
+package com.xzj.promotion.promotion.mapper;
+
+import com.xzj.promotion.promotion.entity.dos.MemberCouponSign;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+/**
+ * 客户优惠券领取标记
+ *
+ * @author liushuai(liushuai711 @ gmail.com)
+ * @version v4.0
+ * @Description:
+ * @since 2023/1/3 18:11
+ */
+public interface MemberCouponSignMapper extends BaseMapper<MemberCouponSign> {
+
+
+}

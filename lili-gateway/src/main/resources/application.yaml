@@ -1,0 +1,146 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: gateway
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDR:127.0.0.1:8848}
+    gateway:
+      routes:
+        - id: member-service
+          uri: lb://member-service
+          predicates:
+            - Path=/member/**
+
+        - id: member-buyer-service
+          uri: lb://member-service
+          predicates:
+            - Path=/buyer/passport/**
+        - id: member-withdraw-service
+          uri: lb://order-service
+          predicates:
+            - Path=/buyer/member/withdrawApply/**
+        - id: member-buyer-member-service
+          uri: lb://member-service
+          predicates:
+            - Path=/buyer/member/**
+        - id: goods-buyer-service
+          uri: lb://goods-service
+          predicates:
+            - Path=/buyer/goods/**
+        - id: promotion-buyer-service
+          uri: lb://goods-service
+          predicates:
+            - Path=/buyer/promotion/**
+        - id: store-buyer-service
+          uri: lb://goods-service
+          predicates:
+            - Path=/buyer/store/**
+        - id: distribution-buyer-service
+          uri: lb://goods-service
+          predicates:
+            - Path=/buyer/distribution/**
+        - id: member-sign-buyer-service
+          uri: lb://member-service
+          predicates:
+            - Path=/buyer/members/**
+        - id: message-buyer-service
+          uri: lb://message-service
+          predicates:
+            - Path=/buyer/common/**,/buyer/other/**,/buyer/live/**,/buyer/message/**,/buyer/broadcast/**
+        - id: order-buyer-service
+          uri: lb://order-service
+          predicates:
+            - Path=/buyer/order/**,/buyer/trade/**,/buyer/payment/**,/buyer/wallet/**
+        - id: goods-service
+          uri: lb://goods-service
+          predicates:
+            - Path=/goods/**
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/order/**
+        - id: manager-service
+          uri: lb://manager-service
+          predicates:
+            - Path=/manager/**,/store/**
+        - id: ai-helper-service
+          uri: lb://lili-AIHelper
+          predicates:
+            - Path=/ai/**
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
+            maxAge: 3600
+
+
+lili:
+  gateway:
+    token-header: AccessToken
+    # Disable before production deployment.
+    # 开发联调时放宽网关鉴权；正式环境必须改为 false。
+    development-mode: ${LILI_SECURITY_DEVELOPMENT_MODE:true}
+    ignored-urls:
+      - /editor-app/**
+      - /MP_verify_qSyvBPhDsPdxvOhC.txt
+      - /weixin/**
+      - /source/**
+      - /buyer/common/slider/**
+      - /buyer/common/site/**
+      - /buyer/common/sms/**
+      - /buyer/common/region/**
+      - /buyer/common/IM
+      - /buyer/payment/cashier/**
+      - /buyer/other/pageData/**
+      - /buyer/live/room/polling/**
+      - /buyer/other/article/**
+      - /buyer/goods/**
+      - /buyer/store/**
+      - /buyer/passport/connect/**
+      - /buyer/members/**
+      - /buyer/passport/member/**
+      - /buyer/passport/member/refresh/**
+      - /buyer/promotion/pintuan/**
+      - /buyer/promotion/seckill/**
+      - /buyer/promotion/pointsGoods/**
+      - /buyer/promotion/coupon
+      - /buyer/member/evaluation/*/goodsEvaluation
+      - /buyer/member/evaluation/*/evaluationNumber
+      - /buyer/other/appVersion/**
+      - /buyer/broadcast/studio/**
+      - /store/passport/login/**
+      - /store/passport/login/refresh/**
+      - /store/common/slider/**
+      - /store/common/sms/**
+      - /store/common/site/**
+      - /store/common/region/**
+      - /manager/common/slider/**
+      - /manager/common/site/**
+      - /manager/common/region/**
+      - /manager/passport/user/login
+      - /manager/passport/user/refresh/**
+      - /manager/other/customWords
+      - /swagger-ui.html
+      - /swagger-ui
+      - /swagger-ui/
+      - /swagger-ui/**
+      - /v3/api-docs/**
+      - /v3/api-docs/**
+      - /manager/promotion/seckill/init
+      - /favicon.ico
+      - /files/**
+      - /static/**
+      - /public/**
+      - /resources/**
+      - /META-INF/resources/**
