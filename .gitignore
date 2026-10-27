@@ -30,3 +30,12 @@ application-local.yaml
 !.env.example
 target*/
 .maven-build/
+
+# Frontend local files
+frontend/**/node_modules/
+frontend/**/dist/
+frontend/**/.env
+frontend/**/.env.*
+!frontend/**/.env.example
+frontend/**/.vscode/
+frontend/**/.idea/
